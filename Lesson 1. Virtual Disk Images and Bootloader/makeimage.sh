@@ -14,7 +14,7 @@ dd if=/dev/zero of=KekOS.img bs=516096c count=1000 2> /dev/null > /dev/null
 # Partitioning disk
 # This creates MBR Partition table.
 # You can read more on MBR here: https://wiki.osdev.org/MBR
-echo "Creating MBR"
+echo "Creating MBR..."
 
 # Here we just invoke commands "o", "n", "a", and "p" by passing them
 # to standard input (\n is used to run each command on a new line)
@@ -23,6 +23,7 @@ echo "Creating MBR"
 
 # Method of inputing values like this is taken from stack exchange. Link:
 # https://superuser.com/questions/332252/how-to-create-and-format-a-partition-using-a-bash-script
+echo 'Invoking loopdisk device...'
 (
 echo o # Create a new empty DOS partition table
 echo n # Add a new partition
