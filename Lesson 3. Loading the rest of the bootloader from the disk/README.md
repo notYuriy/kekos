@@ -92,7 +92,36 @@ disk_read_done:
 
 First, we call function to read from disk. Then, if carry flag is set, we print an error message and trying to read again.
 
+## Building stage 2
 
-### Homework
+```boot/stage2.asm``` file is used for building stage 2. It is then included in ```boot/stage1.asm``` using ```incbin "boot2.bin"``` statement (```boot2.bin``` is ```boot/stage2.asm``` assembled)
+
+The machine code for stage 2 is loaded at 0x1000:0x0000. We use this code to start executing second stage
+
+```
+; Jumping to the second stage
+mov ax, 0x1000
+mov es, ax
+mov ds, ax
+mov fs, ax
+mov gs, ax
+; Set new stack to 0x1ffff
+mov ss, ax
+mov sp, 0xffff 
+; Jump to 0x10000. We can't just update
+; cs on the fly, hence we need to use
+; far jump instruction. It sets the
+; cs to 0x1000, and zeroes ip (so we start
+; from the beginning of stage 2 binary)
+jmp 0x1000:0x0000 ; This also updates cs
+```
+
+This leaves us with ~32KB space for the second stage, which is 64x compared to the bootsector. This space is enough to parse filesystem, find kernel executable and load it.
+
+## Stage 2 code.
+
+We will implement proper stage 2 code in the following tutorials. For now, it just prints a message ("Stage 2 running!")
+
+## Homework
 
 As usual, make the whole thing build and run both in your head and on linux =)

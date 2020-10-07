@@ -59,8 +59,14 @@ mov es, ax
 mov ds, ax
 mov fs, ax
 mov gs, ax
+; Set new stack to 0x1ffff
 mov ss, ax
-mov sp, 0xffff
+mov sp, 0xffff 
+; Jump to 0x10000. We can't just update
+; cs on the fly, hence we need to use
+; far jump instruction. It sets the
+; cs to 0x1000, and zeroes ip (so we start
+; from the beginning of stage 2 binary)
 jmp 0x1000:0x0000 ; This also updates cs
 
 ; Message that is printed on startup
